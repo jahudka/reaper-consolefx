@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<index version="1" name="jahudka_consolefx" commit="7515a4a5f2c59390235dfd329f3cc7f34371e5e3">
+  <category name="FX">
+    <reapack name="jahudka_consolefx_create_busses.lua" type="script" desc="Create Airwindows Console post-fader busses for selected tracks">
+      <version name="1.0" author="jahudka" time="2020-01-05T16:52:38Z">
+        <source main="main">https://github.com/jahudka/reaper-consolefx/raw/7515a4a5f2c59390235dfd329f3cc7f34371e5e3/FX/jahudka_consolefx_create_busses.lua</source>
+      </version>
+    </reapack>
+    <reapack name="jahudka_consolefx_switch_type.lua" type="script" desc="Switch which Airwindows console type is active for the selected tracks">
+      <version name="1.0" author="jahudka" time="2020-01-05T16:52:38Z">
+        <source main="main">https://github.com/jahudka/reaper-consolefx/raw/7515a4a5f2c59390235dfd329f3cc7f34371e5e3/FX/jahudka_consolefx_switch_type.lua</source>
+      </version>
+    </reapack>
+    <reapack name="jahudka_consolefx_toggle_enabled.lua" type="script" desc="Toggle bypass for the currently active Airwindows console type for the selected tracks">
+      <version name="1.0" author="jahudka" time="2020-01-05T16:52:38Z">
+        <source main="main">https://github.com/jahudka/reaper-consolefx/raw/7515a4a5f2c59390235dfd329f3cc7f34371e5e3/FX/jahudka_consolefx_toggle_enabled.lua</source>
+      </version>
+    </reapack>
+  </category>
+</index>
