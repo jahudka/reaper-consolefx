@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="jahudka_consolefx" commit="18325aba3ce64b4e27c5561d7565732ccbd668c8">
+<index version="1" name="jahudka_consolefx" commit="c460587da2d2f478a20caf1b03828481d9e1849d">
   <category name="FX">
     <reapack name="jahudka_consolefx_create_busses.lua" type="script" desc="Create Airwindows Console post-fader busses for selected tracks">
       <metadata>
@@ -15,6 +15,16 @@
 v1.0 (2020-01-05)
  - initial release]]></changelog>
         <source main="main">https://github.com/jahudka/reaper-consolefx/raw/18325aba3ce64b4e27c5561d7565732ccbd668c8/FX/jahudka_consolefx_create_busses.lua</source>
+      </version>
+      <version name="1.2" author="jahudka" time="2020-01-05T21:55:55Z">
+        <changelog><![CDATA[v1.2 (2020-01-05)
+ - set the pan law for created busses explicitly to +0.0 dB
+v1.1 (2020-01-05)
+ - use VST on Windows automatically
+ - added all the Console types
+v1.0 (2020-01-05)
+ - initial release]]></changelog>
+        <source main="main">https://github.com/jahudka/reaper-consolefx/raw/c460587da2d2f478a20caf1b03828481d9e1849d/FX/jahudka_consolefx_create_busses.lua</source>
       </version>
     </reapack>
     <reapack name="jahudka_consolefx_switch_type.lua" type="script" desc="Switch which Airwindows console type is active for the selected tracks">
