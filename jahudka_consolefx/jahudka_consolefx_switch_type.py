@@ -1,14 +1,5 @@
-"""
-ReaScript Name: Toggle Airwindows Console type
-About:
-  Toggles which Airwindows Console type is active, either
-  for the selected bus and its children or for all Console busses
-Author: jahudka
-Link: https://github.com/jahudka/reaper-consolefx
-Version: 1.0
-"""
 from reaper_python import *
-from jahudka_consolefx_common import *
+from jahudka_consolefx_lib import *
 
 
 def switch_console_type():

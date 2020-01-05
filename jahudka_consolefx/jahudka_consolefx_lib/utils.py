@@ -1,38 +1,7 @@
-"""
-ReaScript Name: Jahudka's Airwindows ConsoleFX ReaScripts common files
-About:
-  Required dependency for any of the jahudka_consolefx_* reascripts
-Author: jahudka
-Link: https://github.com/jahudka/reaper-consolefx
-Version: 1.0
-Provides: [nomain] .
-"""
-
 from reaper_python import *
 from sws_python import *
+from .config import CONSOLE_TYPES
 import re
-
-"""
-CONFIGURATION
-"""
-
-"""
-Plugin name format.
- - For Mac AU, use "Airwindows: %s%s"
-"""
-PLUGIN_NAME_FORMAT = "Airwindows: %s%s"
-
-"""
-Which console types should be added. 
-"""
-CONSOLE_TYPES = [
-    "PurestConsole",
-    "Console5",
-]
-
-"""
-CONFIGURATION END - do not edit beyond this line!
-"""
 
 
 _console_type_pattern = re.compile('(%s)' % '|'.join(CONSOLE_TYPES))

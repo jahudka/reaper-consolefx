@@ -1,14 +1,5 @@
-"""
-ReaScript Name: Toggle Airwindows Console enabled
-About:
-  Toggles bypass for the currently online Airwindows Console plugins
-  for the selected bus and its children or for all Console busses
-Author: jahudka
-Link: https://github.com/jahudka/reaper-consolefx
-Version: 1.0
-"""
 from reaper_python import *
-from jahudka_consolefx_common import *
+from jahudka_consolefx_lib import *
 
 
 def toggle_console_enabled():
