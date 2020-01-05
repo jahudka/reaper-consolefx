@@ -7,6 +7,17 @@ we can normally do in Reaper. To simulate this, we can route each of the source
 tracks through an auxiliary track with the Console FX on it. But managing these
 auxiliary tracks manually can be tedious, which is why I made these scripts.
 
+## Installation
+
+Available via [ReaPack](https://reapack.com) - simply import the following URL:
+```
+https://github.com/jahudka/reaper-consolefx/raw/master/index.xml
+```
+
+If you can't or don't want to use ReaPack, simply download the `*.lua` files
+in the `/FX` folder of this repository and copy them to anywhere inside your
+Reaper Scripts folder.
+
 ## Creating Console Busses
 
 The #1 script in this package is `jahudka_consolefx_create_busses.lua`, or
