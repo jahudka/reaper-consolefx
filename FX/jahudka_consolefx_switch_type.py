@@ -8,7 +8,7 @@ Link: https://github.com/jahudka/reaper-consolefx
 Version: 1.0
 """
 from reaper_python import *
-from .jahudka_consolefx_common import *
+from jahudka_consolefx_common import *
 
 
 def switch_console_type():

@@ -5,6 +5,7 @@ About:
 Author: jahudka
 Link: https://github.com/jahudka/reaper-consolefx
 Version: 1.0
+Provides: [nomain] .
 """
 
 from reaper_python import *
