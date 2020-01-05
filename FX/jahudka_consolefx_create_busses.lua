@@ -1,9 +1,11 @@
 -- ReaScript Name: Create Airwindows Console post-fader busses for selected tracks
--- Version: 1.1
+-- Version: 1.2
 -- Author: jahudka
 -- Links:
 --   Documentation https://github.com/jahudka/reaper-consolefx
 -- Changelog:
+--   v1.2 (2020-01-05)
+--    - set the pan law for created busses explicitly to +0.0 dB
 --   v1.1 (2020-01-05)
 --    - use VST on Windows automatically
 --    - added all the Console types
@@ -66,7 +68,7 @@ function get_selected_tracks()
 end
 
 function get_track_name(track)
-    local ok, name = reaper.GetTrackName(track, string.rep(' ', 1024))
+    local _, name = reaper.GetTrackName(track, string.rep(' ', 1024))
     return name
 end
 
@@ -75,6 +77,7 @@ function create_bus(idx, name, mcp)
     local track = reaper.GetTrack(0, idx)
     reaper.GetSetMediaTrackInfo_String(track, 'P_NAME', name, true)
     reaper.SetMediaTrackInfo_Value(track, 'B_SHOWINTCP', 0)
+    reaper.SetMediaTrackInfo_Value(track, 'D_PANLAW', 1.0)
 
     if mcp ~= true then
         reaper.SetMediaTrackInfo_Value(track, 'B_SHOWINMIXER', 0)
@@ -103,8 +106,8 @@ end
 
 function create_console_busses()
     local n_selected = reaper.CountSelectedTracks(0)
-    local parent_track = nil
-    local target_tracks = nil
+    local parent_track
+    local target_tracks
 
     if n_selected == 1 then
         parent_track = reaper.GetSelectedTrack(0, 0)
