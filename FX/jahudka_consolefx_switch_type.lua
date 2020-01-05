@@ -1,16 +1,30 @@
 -- ReaScript Name: Switch which Airwindows console type is active for the selected tracks
--- Version: 1.0
+-- Version: 1.1
 -- Author: jahudka
+-- Links:
+--   Documentation https://github.com/jahudka/reaper-consolefx
+-- Changelog:
+--   v1.1 (2020-01-05)
+--    - added all the Console types
+--    - document the fact that you probably don't need to edit this script's configuration
+--   v1.0 (2020-01-05)
+--    - initial release
 
 -- CONFIGURATION
-PLUGIN_NAME_FORMAT = 'Airwindows: %s%s'
 
+-- Console types this script considers. Since the script doesn't add new plugins
+-- and only works with plugins already inserted on the tracks, you can leave this
+-- as is, it should work even if you change the configuration in *_create_busses.lua.
 CONSOLE_TYPES = {
-    [1] = 'PurestConsole',
-    [2] = 'PDConsole',
-    [3] = 'Console5',
-    [4] = 'Console6',
+    [1] = 'Atmosphere',
+    [2] = 'C5Raw',
+    [3] = 'Console4',
+    [4] = 'Console5',
+    [5] = 'Console6',
+    [6] = 'PD',
+    [7] = 'PurestConsole',
 }
+
 -- END CONFIGURATION, don't edit below this line unless you know what you're doing!
 
 -- HELPERS

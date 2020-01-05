@@ -114,10 +114,18 @@ Note that unlike `[C] DRUMS` and `[C] VOCALS`, `[C] MASTER` doesn't have its
 parent send off and there is no post-fader send there - because the parent send
 _is_ basically the post-fader send that we want there.
 
-The script can add multiple types of the Console plugins when run; edit the
-plugin file in the built-in IDE to choose which types you want to use. If more
-than one Console type is inserted on each track, all but the first will be set
-to offline. See below for a script which will allow you to switch between them easily.
+The script can add multiple types of the Console plugins when run; by default
+all the currently released Console types are used if you have them installed.
+You can edit the script file in the built-in IDE to choose which types you want
+to use. If more than one Console type is inserted on each track, all but the first
+will be set to offline. See below for a script which will allow you to switch
+between them easily.
+
+### Important note
+
+All the busses created by this script will have their names prefixed with `[C] `.
+The other two scripts rely on this prefix to find out which tracks they should
+affect, so if you change or remove the prefix, the other scripts won't work.
 
 ## Switching the active Console type
 
@@ -137,9 +145,11 @@ of the same type on all the affected tracks to online and all the rest to offlin
 Well, effectively it will simply offline the current Console effect and online
 the next :-)
 
-Note that if you made any changes to the configuration of the
-`jahudka_consolefx_create_busses.lua` script, you should also edit this script
-to include the same configuration.
+Note that since this script doesn't add new plugins you don't need to edit the
+`CONSOLE_TYPES` variable in the configuration section even if you edited it
+in the `jahudka_consolefx_create_busses.lua` script: the script will simply
+work with the plugins that are already on the track, it uses the `CONSOLE_TYPES`
+variable just to filter out non-Console plugins you might've added manually.
 
 ## Enabling / disabling Console processing
 
@@ -153,5 +163,6 @@ tell you just how similarly. Target track selection works the same; but instead
 of bringing the active Console type offline and looking for a next type to bring
 online, it simply toggles the bypass state of the currently active Console type.
 
-Again, any changes to the configuration must be also reflected in this script
-in order for stuff to work as expected. 
+Again, the `CONSOLE_TYPES` variable in the configuration section of the script
+is only used to filter out non-Console plugins, you don't need to change it
+if you edited `jahudka_consolefx_create_busses.lua`.

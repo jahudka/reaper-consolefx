@@ -1,19 +1,40 @@
 -- ReaScript Name: Create Airwindows Console post-fader busses for selected tracks
--- Version: 1.0
+-- Version: 1.1
 -- Author: jahudka
+-- Links:
+--   Documentation https://github.com/jahudka/reaper-consolefx
+-- Changelog:
+--   v1.1 (2020-01-05)
+--    - use VST on Windows automatically
+--    - added all the Console types
+--   v1.0 (2020-01-05)
+--    - initial release
 
 -- CONFIGURATION
-PLUGIN_NAME_FORMAT = 'Airwindows: %s%s'
 
+-- Whether or not to use AudioUnits on MacOS. To force the script to use VSTs,
+-- change this line to USE_AUDIO_UNITS = false
+USE_AUDIO_UNITS = os.getenv('HOME') and true or false
+
+-- By default all Console types that you have installed are used.
+-- If you wish to only include specific types, edit this array
+-- to only include the desired entries; make sure to update the
+-- numbers so that they go from 1 to the number of entries without gaps!
 CONSOLE_TYPES = {
-    [1] = 'PurestConsole',
-    [2] = 'PDConsole',
-    [3] = 'Console5',
-    [4] = 'Console6',
+    [1] = 'Atmosphere',
+    [2] = 'C5Raw',
+    [3] = 'Console4',
+    [4] = 'Console5',
+    [5] = 'Console6',
+    [6] = 'PD',
+    [7] = 'PurestConsole',
 }
+
 -- END CONFIGURATION, don't edit below this line unless you know what you're doing!
 
 -- HELPERS
+
+PLUGIN_NAME_FORMAT = USE_AUDIO_UNITS and 'Airwindows: %s%s' or '%s%s'
 
 function get_child_tracks(parent)
     local parent_guid = reaper.GetTrackGUID(parent)
