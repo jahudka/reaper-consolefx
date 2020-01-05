@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Jahudka's Airwindows Console Scripts" commit="6dc622aa767db53b46246c823f478d9d539a58ce">
+<index version="1" name="Jahudka's Airwindows Console Scripts" commit="84e0ede3f0b9fecd8b1d4a21632107b80403aa9a">
   <category name="FX">
     <reapack name="jahudka_consolefx_common.py" type="script" desc="Jahudka's Airwindows ConsoleFX ReaScripts common files">
       <metadata>
@@ -13,7 +13,7 @@
         <link rel="website">https://github.com/jahudka/reaper-consolefx</link>
       </metadata>
       <version name="1.0" author="jahudka" time="2020-01-05T03:24:04Z">
-        <source>https://github.com/jahudka/reaper-consolefx/raw/6dc622aa767db53b46246c823f478d9d539a58ce/FX/jahudka_consolefx_common.py</source>
+        <source>https://github.com/jahudka/reaper-consolefx/raw/84e0ede3f0b9fecd8b1d4a21632107b80403aa9a/FX/jahudka_consolefx_common.py</source>
       </version>
     </reapack>
     <reapack name="jahudka_consolefx_create_busses.py" type="script" desc="Create Airwindows Console post-fader busses for selected tracks">
@@ -40,7 +40,7 @@
         <link rel="website">https://github.com/jahudka/reaper-consolefx</link>
       </metadata>
       <version name="1.0" author="jahudka" time="2020-01-05T03:24:04Z">
-        <source main="main">https://github.com/jahudka/reaper-consolefx/raw/6dc622aa767db53b46246c823f478d9d539a58ce/FX/jahudka_consolefx_create_busses.py</source>
+        <source main="main">https://github.com/jahudka/reaper-consolefx/raw/84e0ede3f0b9fecd8b1d4a21632107b80403aa9a/FX/jahudka_consolefx_create_busses.py</source>
       </version>
     </reapack>
     <reapack name="jahudka_consolefx_switch_type.py" type="script" desc="Toggle Airwindows Console type">
@@ -55,7 +55,7 @@
         <link rel="website">https://github.com/jahudka/reaper-consolefx</link>
       </metadata>
       <version name="1.0" author="jahudka" time="2020-01-05T03:24:04Z">
-        <source main="main">https://github.com/jahudka/reaper-consolefx/raw/6dc622aa767db53b46246c823f478d9d539a58ce/FX/jahudka_consolefx_switch_type.py</source>
+        <source main="main">https://github.com/jahudka/reaper-consolefx/raw/84e0ede3f0b9fecd8b1d4a21632107b80403aa9a/FX/jahudka_consolefx_switch_type.py</source>
       </version>
     </reapack>
     <reapack name="jahudka_consolefx_toggle_enabled.py" type="script" desc="Toggle Airwindows Console enabled">
@@ -70,7 +70,7 @@
         <link rel="website">https://github.com/jahudka/reaper-consolefx</link>
       </metadata>
       <version name="1.0" author="jahudka" time="2020-01-05T03:24:04Z">
-        <source main="main">https://github.com/jahudka/reaper-consolefx/raw/6dc622aa767db53b46246c823f478d9d539a58ce/FX/jahudka_consolefx_toggle_enabled.py</source>
+        <source main="main">https://github.com/jahudka/reaper-consolefx/raw/84e0ede3f0b9fecd8b1d4a21632107b80403aa9a/FX/jahudka_consolefx_toggle_enabled.py</source>
       </version>
     </reapack>
   </category>
