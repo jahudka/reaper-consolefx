@@ -136,6 +136,7 @@ type is active for the selected tracks`). To use it, either:
  - select a single `[C]` folder track in the mixer, or
  - select any number of `[C]` tracks in the mixer, or
  - don't select any tracks at all.
+
 In the first case the script will affect the selected folder track and all of its
 children; in the second case it will affect only the selected tracks and in the
 last case it will affect all the `[C]` tracks in the project. The script will
