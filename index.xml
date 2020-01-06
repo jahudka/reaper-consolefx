@@ -60,4 +60,100 @@ v1.0 (2020-01-05)
       </version>
     </reapack>
   </category>
+  <metadata>
+    <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Jahudka's Airwindows ConsoleFX ReaScript utilities\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 These ReaScript utilities make it easier to create and manage proper routing for the Airwindows Console plugins. As you probably know, the Channel versions of the plugins should go on individual tracks {\i post-fader}, which isn't something we can normally do in Reaper. To simulate this, we can route each of the source tracks through an auxiliary track with the Console FX on it. But managing these auxiliary tracks manually can be tedious, which is why I made these scripts.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Installation\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Available via {\field{\*\fldinst{HYPERLINK "https://reapack.com"}}{\fldrslt{\ul
+ReaPack
+}}}
+ - simply import the following URL:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 https://github.com/jahudka/reaper-consolefx/raw/master/index.xml\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If you can't or don't want to use ReaPack, simply download the {\f1 *.lua} files in the {\f1 /FX} folder of this repository and copy them to anywhere inside your Reaper Scripts folder.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Creating Console Busses\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The #1 script in this package is {\f1 jahudka_consolefx_create_busses.lua}, or {\f1 Create Airwindows Console post-fader busses for selected tracks}, as it should be called in ReaPack. This script can be run in one of two modes: either select a single folder track, or select multiple tracks (folder and otherwise). In the first case the plugin essentially creates a routing construct which replaces the summing of the folder's child tracks; in the second case it replaces the summing of the selected tracks into the master bus.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\i For example:} Let's have the following tracks in our project:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 1 Drums (folder)\line
+   2 Kick\line
+   3 Snare\line
+   4 Hihat\line
+5 Bass\line
+6 Guitar\line
+7 Vocals (folder)\line
+   8 Main Voc\line
+   9 Backing Voc\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If you select the {\f1 Drums} folder track and run this script, the project will look like this (although you might need to peruse the Track Manager to really see it):\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 1 Drums (folder)\line
+   2 Kick (parent send off, post-fader send to "11 [C] Kick")\line
+   3 Snare (parent send off, post-fader send to "12 [C] Snare")\line
+   4 Hihat (parent send off, post-fader send to "13 [C] Hihat")\line
+5 Bass\line
+6 Guitar\line
+7 Vocals (folder)\line
+   8 Main Voc\line
+   9 Backing Voc\line
+10 [C] DRUMS (folder, visible in MCP only, parent send off, post-fader send to "1 Drums", Console Buss effects added)\line
+   11 [C] Kick (hidden in both MCP and TCP, Console Channel effects added)\line
+   12 [C] Snare (hidden in both MCP and TCP, Console Channel effects added)\line
+   13 [C] Hihat (hidden in both MCP and TCP, Console Channel effects added)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Now let's do the same to {\f1 Vocals}:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 1 Drums (folder)\line
+   2 Kick (parent send off, post-fader send to "11 [C] Kick")\line
+   3 Snare (parent send off, post-fader send to "12 [C] Snare")\line
+   4 Hihat (parent send off, post-fader send to "13 [C] Hihat")\line
+5 Bass\line
+6 Guitar\line
+7 Vocals (folder)\line
+   8 Main Voc (parent send off, post-fader send to "15 [C] Main Voc"\line
+   9 Backing Voc (parent send off, post-fader send to "16 [C] Backing Voc"\line
+10 [C] DRUMS (folder, visible in MCP only, parent send off, post-fader send to "1 Drums", Console Buss effects added)\line
+   11 [C] Kick (hidden in both MCP and TCP, Console Channel effects added)\line
+   12 [C] Snare (hidden in both MCP and TCP, Console Channel effects added)\line
+   13 [C] Hihat (hidden in both MCP and TCP, Console Channel effects added)\line
+14 [C] VOCALS (folder, visible in MCP only, parent send off, post-fader send to "7 Vocals", Console Buss effects added)\line
+   15 [C] Main Voc (hidden in both MCP and TCP, Console Channel effects added)\line
+   16 [C] Backing Voc (hidden in both MCP and TCP, Console Channel effects added)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 It looks like a lot, doesn't it? Now we've replaced the summing of both the {\f1 Drums} and the {\f1 Vocals} folders. In your project you should really only see the {\f1 [C] DRUMS} and {\f1 [C] VOCALS} tracks in the mixer, otherwise everything should look mostly the same (except some routing indicators and sends). To finish things off, let's use the script's other mode to replace the master summing: select {\f1 Drums}, {\f1 Bass}, {\f1 Guitar} and {\f1 Vocals} and run the script. This is what your project should look like now:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 1 Drums (folder, parent send off, post-fader send to "18 [C] Drums")\line
+   2 Kick (parent send off, post-fader send to "11 [C] Kick")\line
+   3 Snare (parent send off, post-fader send to "12 [C] Snare")\line
+   4 Hihat (parent send off, post-fader send to "13 [C] Hihat")\line
+5 Bass (parent send off, post-fader send to "19 [C] Bass")\line
+6 Guitar (parent send off, post-fader send to "20 [C] Guitar")\line
+7 Vocals (folder, parent send off, post-fader send to "21 [C] Vocals")\line
+   8 Main Voc (parent send off, post-fader send to "15 [C] Main Voc"\line
+   9 Backing Voc (parent send off, post-fader send to "16 [C] Backing Voc"\line
+10 [C] DRUMS (folder, visible in MCP only, parent send off, post-fader send to "1 Drums", Console Buss effects added)\line
+   11 [C] Kick (hidden in both MCP and TCP, Console Channel effects added)\line
+   12 [C] Snare (hidden in both MCP and TCP, Console Channel effects added)\line
+   13 [C] Hihat (hidden in both MCP and TCP, Console Channel effects added)\line
+14 [C] VOCALS (folder, visible in MCP only, parent send off, post-fader send to "7 Vocals", Console Buss effects added)\line
+   15 [C] Main Voc (hidden in both MCP and TCP, Console Channel effects added)\line
+   16 [C] Backing Voc (hidden in both MCP and TCP, Console Channel effects added)\line
+17 [C] MASTER (folder, visible in MCP only, Console Buss effects added)\line
+   18 [C] Drums (hidden in both MCP and TCP, Console Channel effects added)\line
+   19 [C] Bass (hidden in both MCP and TCP, Console Channel effects added)\line
+   20 [C] Guitar (hidden in both MCP and TCP, Console Channel effects added)\line
+   21 [C] Vocals (hidden in both MCP and TCP, Console Channel effects added)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Note that unlike {\f1 [C] DRUMS} and {\f1 [C] VOCALS}, {\f1 [C] MASTER} doesn't have its parent send off and there is no post-fader send there - because the parent send {\i is} basically the post-fader send that we want there.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The script can add multiple types of the Console plugins when run; by default all the currently released Console types are used if you have them installed. You can edit the script file in the built-in IDE to choose which types you want to use. If more than one Console type is inserted on each track, all but the first will be set to offline. See below for a script which will allow you to switch between them easily.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Important note\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 All the busses created by this script will have their names prefixed with {\f1 [C] }. The other two scripts rely on this prefix to find out which tracks they should affect, so if you change or remove the prefix, the other scripts won't work.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Switching the active Console type\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If you're using multiple Console types, it might be useful to be able to switch to a different type easily. That's what the {\f1 jahudka_consolefx_switch_type.lua} script is for (in ReaPack it should be called {\f1 Switch which Airwindows console type is active for the selected tracks}). To use it, either:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab select a single {\f1 [C]} folder track in the mixer, or\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab select any number of {\f1 [C]} tracks in the mixer, or\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab don't select any tracks at all.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In the first case the script will affect the selected folder track and all of its children; in the second case it will affect only the selected tracks and in the last case it will affect all the {\f1 [C]} tracks in the project. The script will look within the first affected track for the first {\i offline} Console effect that is after an {\i online} Console effect; it will then set all Console instances of the same type on all the affected tracks to online and all the rest to offline. Well, effectively it will simply offline the current Console effect and online the next :-)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Note that since this script doesn't add new plugins you don't need to edit the {\f1 CONSOLE_TYPES} variable in the configuration section even if you edited it in the {\f1 jahudka_consolefx_create_busses.lua} script: the script will simply work with the plugins that are already on the track, it uses the {\f1 CONSOLE_TYPES} variable just to filter out non-Console plugins you might've added manually.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Enabling / disabling Console processing\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Let's face it, we all want a simple button to toggle Console on and off, to try and see if we can {\i hear} it do anything! To that end I present you the {\f1 jahudka_consolefx_toggle_enabled.lua} script (known in the ReaPack realm as {\f1 Toggle bypass for the currently active Airwindows console type for the selected tracks}). This script works entirely similarly to {\f1 jahudka_consolefx_switch_type.lua}; indeed, were you to run {\f1 diff} on their sources, the terseness of its output would tell you just how similarly. Target track selection works the same; but instead of bringing the active Console type offline and looking for a next type to bring online, it simply toggles the bypass state of the currently active Console type.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Again, the {\f1 CONSOLE_TYPES} variable in the configuration section of the script is only used to filter out non-Console plugins, you don't need to change it if you edited {\f1 jahudka_consolefx_create_busses.lua}.\par}
+}
+]]></description>
+  </metadata>
 </index>
