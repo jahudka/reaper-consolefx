@@ -1,9 +1,11 @@
 -- ReaScript Name: Create Airwindows Console post-fader busses for selected tracks
--- Version: 1.2
+-- Version: 1.3
 -- Author: jahudka
 -- Links:
 --   Documentation https://github.com/jahudka/reaper-consolefx
 -- Changelog:
+--   v1.3 (2020-02-16)
+--    - don't create busses for tracks that don't have master / parent send
 --   v1.2 (2020-01-05)
 --    - set the pan law for created busses explicitly to +0.0 dB
 --   v1.1 (2020-01-05)
@@ -11,6 +13,11 @@
 --    - added all the Console types
 --   v1.0 (2020-01-05)
 --    - initial release
+-- About:
+--   This script can be used to automatically generate the appropriate routing
+--   for the Airwindows Console effects, which need to be applied post-fader.
+--   See https://github.com/jahudka/reaper-consolefx#creating-console-busses
+--   for an usage overview.
 
 -- CONFIGURATION
 
@@ -70,6 +77,10 @@ end
 function get_track_name(track)
     local _, name = reaper.GetTrackName(track, string.rep(' ', 1024))
     return name
+end
+
+function has_parent_send(track)
+    return reaper.GetMediaTrackInfo_Value(track, 'B_MAINSEND') > 0
 end
 
 function create_bus(idx, name, mcp)
@@ -134,10 +145,12 @@ function create_console_busses()
     end
 
     for _, track in ipairs(target_tracks) do
-        idx = idx + 1
-        local bus = create_bus(idx, '[C] ' .. get_track_name(track), false)
-        add_console_fx(bus, 'Channel')
-        reroute(track, bus)
+        if has_parent_send(track) then
+            idx = idx + 1
+            local bus = create_bus(idx, '[C] ' .. get_track_name(track), false)
+            add_console_fx(bus, 'Channel')
+            reroute(track, bus)
+        end
     end
 
     local last_bus = reaper.GetTrack(0, idx)

@@ -23,7 +23,7 @@ Reaper Scripts folder.
 The #1 script in this package is `jahudka_consolefx_create_busses.lua`, or
 `Create Airwindows Console post-fader busses for selected tracks`, as it should
 be called in ReaPack. This script can be run in one of two modes: either select
-a single folder track, or select multiple tracks (folder and otherwise).
+a single folder track, or select multiple tracks (folder or otherwise).
 In the first case the plugin essentially creates a routing construct which replaces
 the summing of the folder's child tracks; in the second case it replaces the summing
 of the selected tracks into the master bus.
@@ -121,6 +121,10 @@ to use. If more than one Console type is inserted on each track, all but the fir
 will be set to offline. See below for a script which will allow you to switch
 between them easily.
 
+As of version 1.3, the script will skip any tracks that have their master / parent
+send off, so if you have some DCAs or samplers with complex routing that don't use
+the master / parent send, these won't be included in the generated routing matrix.
+
 ### Important note
 
 All the busses created by this script will have their names prefixed with `[C] `.
@@ -162,7 +166,8 @@ tracks`). This script works entirely similarly to `jahudka_consolefx_switch_type
 indeed, were you to run `diff` on their sources, the terseness of its output would
 tell you just how similarly. Target track selection works the same; but instead
 of bringing the active Console type offline and looking for a next type to bring
-online, it simply toggles the bypass state of the currently active Console type.
+online, it simply toggles the bypass state of all non-offline Console effects
+on the affected tracks.
 
 Again, the `CONSOLE_TYPES` variable in the configuration section of the script
 is only used to filter out non-Console plugins, you don't need to change it
