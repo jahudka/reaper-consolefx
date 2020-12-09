@@ -1,9 +1,11 @@
 -- ReaScript Name: Create Airwindows Console post-fader busses for selected tracks
--- Version: 1.4
+-- Version: 1.5
 -- Author: jahudka
 -- Links:
 --   Documentation https://github.com/jahudka/reaper-consolefx
 -- Changelog:
+--   v1.5 (2020-12-09)
+--    - fixed Linked Gain Utility local path
 --   v1.4 (2020-12-09)
 --    - added support for Console 7
 --    - add and configure Linked Gain Utility automatically
@@ -42,6 +44,10 @@ CONSOLE_TYPES = {
     [7] = 'PD',
     [8] = 'PurestConsole',
 }
+
+-- The full relative path to the Linked Gain Utility plugin.
+-- Change this if you installed it manually.
+LINKED_GAIN_UTILITY = 'jahudka_consolefx/Utility/jahudka_linked_gain_utility.jsfx'
 
 -- END CONFIGURATION, don't edit below this line unless you know what you're doing!
 
@@ -128,7 +134,7 @@ function get_free_bus_id()
 end
 
 function add_linked_gain_utility(track, link_id, invert)
-    local id = reaper.TrackFX_AddByName(track, 'utility/jahudka_linked_gain_utility.jsfx', false, -1)
+    local id = reaper.TrackFX_AddByName(track, LINKED_GAIN_UTILITY, false, -1)
 
     if id > -1 then
         reaper.TrackFX_SetParam(track, id, 0, link_id)
