@@ -1,9 +1,11 @@
 -- ReaScript Name: Toggle bypass for the currently active Airwindows console type for the selected tracks
--- Version: 1.2
+-- Version: 1.3
 -- Author: jahudka
 -- Links:
 --   Documentation https://github.com/jahudka/reaper-consolefx
 -- Changelog:
+--   v1.4 (2020-12-09)
+--    - added support for Console 7
 --   v1.2 (2020-02-16)
 --    - toggle bypass for any console fx that aren't offline
 --   v1.1 (2020-01-05)
@@ -28,8 +30,9 @@ CONSOLE_TYPES = {
     [3] = 'Console4',
     [4] = 'Console5',
     [5] = 'Console6',
-    [6] = 'PD',
-    [7] = 'PurestConsole',
+    [6] = 'Console7',
+    [7] = 'PD',
+    [8] = 'PurestConsole',
 }
 
 -- END CONFIGURATION, don't edit below this line unless you know what you're doing!

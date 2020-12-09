@@ -1,0 +1,63 @@
+desc: Linked Gain Utility
+author: jahudka
+version: 1.0
+changelog: Fresh out of the oven
+about:
+  # Linked Gain Utility
+
+  This utility allows you to change a gain setting in multiple places in the project at once.
+  It is primarily useful as a tool to adjust how hard you drive (part of) a processing chain
+  without affecting the overall gain. Simply add multiple instances of the plugin across the
+  project, adjust the Link ID and Invert gain settings to match your needs and prosper.
+
+  Changes to the Gain parameter of any instance are propagated across all instances sharing
+  the same Link ID. The Invert gain setting is only applied locally for instances that have
+  it enabled.
+
+  If you want to automate the Gain parameter, you should only do so for one of the instances
+  sharing a given Link ID, otherwise things will quite possibly break in horrible ways!
+
+slider1:0<0,255,1>Link ID
+slider2:0<-32,32,0.5>Gain (dB)
+slider3:0<0,1,1{no,yes}>Invert gain
+
+options:gmem=jahudka_linked_gain
+
+@init
+  scale = log(10.0) / 20.0;
+  id = slider1;
+  gain = slider2;
+  invert = slider3;
+
+  gain !== gmem[id] && gain !== 0.0 ? (
+    gmem[id] = gain;
+    gmem[id + 256] = exp(gain * scale);
+    gmem[id + 512] = exp(-gain * scale);
+  );
+
+@slider
+  invert = slider3;
+
+  id !== slider1 ? (
+    id = slider1;
+    gain = gmem[id];
+    slider2 = gain;
+    sliderchange(slider2);
+  ) : (
+    gain = slider2;
+    gmem[id] = gain;
+    gmem[id + 256] = exp(gain * scale);
+    gmem[id + 512] = exp(-gain * scale);
+  );
+
+@block
+  gain !== gmem[id] ? (
+    gain = invert ? -gmem[id] : gmem[id];
+    slider2 = gain;
+    sliderchange(slider2);
+  );
+
+@sample
+  g = gmem[id + (invert ? 512 : 256)];
+  spl0 = spl0 * g;
+  spl1 = spl1 * g;

@@ -14,9 +14,9 @@ Available via [ReaPack](https://reapack.com) - simply import the following URL:
 https://github.com/jahudka/reaper-consolefx/raw/master/index.xml
 ```
 
-If you can't or don't want to use ReaPack, simply download the `*.lua` files
-in the `/FX` folder of this repository and copy them to anywhere inside your
-Reaper Scripts folder.
+If you can't or don't want to use ReaPack:
+ - Download the `FX/*.lua` files and put them in the Reaper Scripts directory
+ - Download the `Utility/*.jsfx` file and put it in the Reaper Effects directory
 
 ## Creating Console Busses
 
@@ -130,6 +130,31 @@ the master / parent send, these won't be included in the generated routing matri
 All the busses created by this script will have their names prefixed with `[C] `.
 The other two scripts rely on this prefix to find out which tracks they should
 affect, so if you change or remove the prefix, the other scripts won't work.
+
+### Linked Gain Utility
+
+As of version 1.4 there is a bundled JSFX called "Linked Gain Utility". If it's
+available when the script is run, it is inserted on the generated auxiliary tracks
+as follows:
+
+ - On all the generated tracks with the Console Channel plugins the Linked Gain
+   Utility is inserted as the first plugin in the chain (before any Console
+   Channel plugins)
+ - On the generated summing track with the Console Buss plugins it is inserted
+   last in the chain (after any Console Buss plugins)
+
+All the instances of the plugin will be configured to have the same Link ID and
+the instance on the summing track will have the Invert flag on. What this means
+is that you can now adjust the Gain setting of any of the Linked Gain Utility
+instances to adjust how hard you're driving the Console summing it is a part of,
+without having to touch your faders at all. The Invert flag on the summing track's
+instance will make that instance apply the gain setting inversely to compensate
+for the gain of the channel instances.
+
+Link IDs assigned by this script are computed as `200 + count(existing folder summing tracks)`,
+so for the first folder whose summing you replace by this script the Link ID will be 200,
+for the second it will be 201 etc. For the summing construct which replaces summing
+to the master bus the Link ID will be 255.
 
 ## Switching the active Console type
 
