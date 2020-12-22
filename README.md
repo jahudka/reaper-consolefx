@@ -10,13 +10,74 @@ auxiliary tracks manually can be tedious, which is why I made these scripts.
 ## Installation
 
 Available via [ReaPack](https://reapack.com) - simply import the following URL:
+
 ```
 https://github.com/jahudka/reaper-consolefx/raw/master/index.xml
 ```
 
-If you can't or don't want to use ReaPack:
+Then download all the scripts from this repository. If you can't or don't want to
+use ReaPack:
  - Download the `FX/*.lua` files and put them in the Reaper Scripts directory
  - Download the `Utility/*.jsfx` file and put it in the Reaper Effects directory
+
+### Important
+
+Since v2.0, some utility functions the scripts use have been extracted into
+a separate library script file called `jahudka_consolefx_utils.lua`.
+*The scripts won't function without this file*, so please don't forget to
+install it as well.
+
+### Dependencies
+
+Since v2.0, there is a GUI config script you can install to configure some aspects
+of what the utilities do. To use it you'll need to install
+[the Scythe v3 GUI library](https://jalovatt.github.io/scythe), which is also
+available from ReaPack and included in the standard repositories. However,
+you don't need to use the GUI to configure the plugin: if you're comfortable
+getting your hands dirty, there's an INI file you can edit to achieve the same
+effect.
+
+## Configuration
+
+As mentioned, since v2.0 there is a GUI for changing the configuration of these
+utilities. To open the configuration dialogue run the `jahudka_consolefx_preferences.lua`
+script from your Actions menu.
+
+The configuration dialogue itself is pretty self-explanatory. There's a list
+of Console plugins that you wish to use with the utilities, there's the option
+to select which Console type should be enabled by default when creating a new
+routing construct, an option to switch whether the scripts will use the VST
+or AU versions of the Console plugins (this is mainly useful on Mac because
+on Windows and Linux your _only_ option is VST) and there's an option to enable
+the Linked Gain Utility integration explained below. The value in the textbox
+under this last option is the local path to the Linked Gain Utility JSFX,
+relative to your Effects folder; you'll only need to modify this if you didn't
+install the scripts and the JSFX via ReaPack.
+
+*If you don't want to install the GUI*, you can still set all of these options
+manually by creating a file called `jahudka-consolefx.ini` in your Reaper
+resources folder (that's the one that contains `reaper.ini`, `Scripts`, `Effects`
+and so on). Inside this file you can specify the following options in the form
+`<option> = <value>`:
+
+ - `console_types`: Comma-separated list of Console types you wish to use.
+   The Console _type_ is the part of its name before `Channel` or `Buss`, so
+   for example `Atmosphere`, `Purest` or `Console7`. The one special case
+   (which will be mentioned again) is `Console7Cascade`, which doesn't include
+   `Channel` in the name - if you want to include it, you must specify the full name.
+ - `default_type`: Which Console type should be enabled by default when creating
+   a new routing construct. The script doesn't check it, but it would probably
+   make sense to use one of the types listed in `console_types`.
+ - `plugin_type`: `VST` or `AU`, pretty self-explanatory I would think.
+ - `use_linked_gain_utility`: Whether to insert the Linked Gain Utility effect
+   (explained below) on newly created routing constructs. `1` or `0`.
+ - `linked_gain_utility_path`: The local path to the Linked Gain Utility JSFX,
+   relative to your Effects folder.
+
+If you don't configure the scripts using either of these methods, they'll still
+work - they'll just fall back to a sane(ish) set of defaults. But configuring
+the scripts will give you the ability to use them with new versions of Console
+as soon as Chris releases them - you won't have to wait until I update them. 
 
 ## Creating Console Busses
 
@@ -116,9 +177,9 @@ _is_ basically the post-fader send that we want there.
 
 The script can add multiple types of the Console plugins when run; by default
 all the currently released Console types are used if you have them installed.
-You can edit the script file in the built-in IDE to choose which types you want
-to use. If more than one Console type is inserted on each track, all but the first
-will be set to offline. See below for a script which will allow you to switch
+You can edit the script configuration as described above to choose which types you want
+to use. If more than one Console type is inserted on each track, all but the default
+type will be set to offline. See below for a script which will allow you to switch
 between them easily.
 
 As of version 1.3, the script will skip any tracks that have their master / parent
@@ -163,7 +224,7 @@ to a different type easily. That's what the `jahudka_consolefx_switch_type.lua`
 script is for (in ReaPack it should be called `Switch which Airwindows console
 type is active for the selected tracks`). To use it, either:
  - select a single `[C]` folder track in the mixer, or
- - select any number of `[C]` tracks in the mixer, or
+ - select any number of individual `[C]` tracks in the mixer, or
  - don't select any tracks at all.
 
 In the first case the script will affect the selected folder track and all of its
@@ -175,25 +236,31 @@ of the same type on all the affected tracks to online and all the rest to offlin
 Well, effectively it will simply offline the current Console effect and online
 the next :-)
 
-Note that since this script doesn't add new plugins you don't need to edit the
-`CONSOLE_TYPES` variable in the configuration section even if you edited it
-in the `jahudka_consolefx_create_busses.lua` script: the script will simply
-work with the plugins that are already on the track, it uses the `CONSOLE_TYPES`
-variable just to filter out non-Console plugins you might've added manually.
+One known issue of this script is the `Console7Cascade` plugin: the corresponding
+`Buss` plugin for the `Cascade` version of `Console7` is shared with the regular
+`Console7Channel`. The current switching algorithm cannot cope with this. When
+you switch the active Console type on a _folder_ track and its children include
+both the regular `Console7` and the `Console7Cascade` channel plugins,
+the `Cascade` plugins will be skipped. If you want to switch to them you need
+to select all the child tracks and then run the script as many times as required
+to toggle your way through to the `Cascade` plugin. But note that if you do this,
+the folder track won't synchronise its Console type with the child tracks, you'll
+need to do that manually. This whole issue might get fixed some time in the future
+if and when I come up with some behaviour that would be intuitive and at the same
+time wouldn't require hacks in code. It might take a while, but trust me, I'll
+figure it out ;-)
 
 ## Enabling / disabling Console processing
 
 Let's face it, we all want a simple button to toggle Console on and off, to try
-and see if we can _hear_ it do anything! To that end I present you the
-`jahudka_consolefx_toggle_enabled.lua` script (known in the ReaPack realm as
-`Toggle bypass for the currently active Airwindows console type for the selected
-tracks`). This script works entirely similarly to `jahudka_consolefx_switch_type.lua`;
-indeed, were you to run `diff` on their sources, the terseness of its output would
-tell you just how similarly. Target track selection works the same; but instead
-of bringing the active Console type offline and looking for a next type to bring
-online, it simply toggles the bypass state of all non-offline Console effects
-on the affected tracks.
+and see if we can _hear_ it do anything! That's what we're all here for, right?
+To that end I present you the `jahudka_consolefx_toggle_enabled.lua` script
+(known in ReaPack as `Toggle bypass for the currently active Airwindows console
+type for the selected tracks`). This script works similarly to `jahudka_consolefx_switch_type.lua`.
+Target track selection works the same; but instead of bringing the active
+Console type offline and looking for a next type to bring online, it simply
+toggles the bypass state of all non-offline Console effects on the affected tracks.
 
-Again, the `CONSOLE_TYPES` variable in the configuration section of the script
-is only used to filter out non-Console plugins, you don't need to change it
-if you edited `jahudka_consolefx_create_busses.lua`.
+Since this plugin doesn't care whether the currently active Console types on the
+target tracks are the same, it *doesn't* suffer from the same issue with the
+`Console7Cascade` as the previous script does.
