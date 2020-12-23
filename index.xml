@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="jahudka_consolefx" commit="251d465ad4bbf28ccce0f7aaa4985529ae22af75">
+<index version="1" name="jahudka_consolefx" commit="70171bbc918f14a14a6eb8bec586c840222974ec">
   <category name="FX">
     <reapack name="jahudka_consolefx_create_busses.lua" type="script" desc="Create Airwindows Console post-fader busses for selected tracks">
       <metadata>
@@ -96,6 +96,28 @@ v1.1 (2020-01-05)
 v1.0 (2020-01-05)
  - initial release]]></changelog>
         <source main="main">https://github.com/jahudka/reaper-consolefx/raw/251d465ad4bbf28ccce0f7aaa4985529ae22af75/FX/jahudka_consolefx_create_busses.lua</source>
+      </version>
+      <version name="2.1" author="jahudka" time="2020-12-23T00:14:52Z">
+        <changelog><![CDATA[v2.1 (2020-12-23)
+ - now actually checking user preferences before inserting Linked Gain Utility
+v2.0 (2020-12-21)
+ - extracted utility methods to *_utils.lua
+ - added support for Console 7 Cascade
+v1.5 (2020-12-09)
+ - fixed Linked Gain Utility local path
+v1.4 (2020-12-09)
+ - added support for Console 7
+ - add and configure Linked Gain Utility automatically
+v1.3 (2020-02-16)
+ - don't create busses for tracks that don't have master / parent send
+v1.2 (2020-01-05)
+ - set the pan law for created busses explicitly to +0.0 dB
+v1.1 (2020-01-05)
+ - use VST on Windows automatically
+ - added all the Console types
+v1.0 (2020-01-05)
+ - initial release]]></changelog>
+        <source main="main">https://github.com/jahudka/reaper-consolefx/raw/70171bbc918f14a14a6eb8bec586c840222974ec/FX/jahudka_consolefx_create_busses.lua</source>
       </version>
     </reapack>
     <reapack name="jahudka_consolefx_preferences.lua" type="script" desc="Preferences GUI for Jahudka's ConsoleFX scripts">
