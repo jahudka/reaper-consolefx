@@ -1,9 +1,11 @@
 -- ReaScript Name: Create Airwindows Console post-fader busses for selected tracks
--- Version: 2.0
+-- Version: 2.1
 -- Author: jahudka
 -- Links:
 --   Documentation https://github.com/jahudka/reaper-consolefx
 -- Changelog:
+--   v2.1 (2020-12-23)
+--    - now actually checking user preferences before inserting Linked Gain Utility
 --   v2.0 (2020-12-21)
 --    - extracted utility methods to *_utils.lua
 --    - added support for Console 7 Cascade
@@ -128,7 +130,10 @@ local function create_console_busses()
 
     reaper.SetMediaTrackInfo_Value(summing_bus, 'I_FOLDERDEPTH', 1)
     add_console_fx(summing_bus, 'Buss')
-    add_linked_gain_utility(summing_bus, link_id, 1)
+
+    if prefs['use_linked_gain_utility'] then
+        add_linked_gain_utility(summing_bus, link_id, 1)
+    end
 
     if parent_track ~= nil then
         reroute(summing_bus, parent_track)
@@ -138,7 +143,11 @@ local function create_console_busses()
         if has_parent_send(track) then
             idx = idx + 1
             local bus = create_bus(idx, prefix_track_name(get_track_name(track)), false)
-            add_linked_gain_utility(bus, link_id, 0)
+
+            if prefs['use_linked_gain_utility'] then
+                add_linked_gain_utility(bus, link_id, 0)
+            end
+
             add_console_fx(bus, 'Channel')
             reroute(track, bus)
         end
