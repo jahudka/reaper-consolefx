@@ -1,0 +1,260 @@
+desc:d'Arpagnan Arpeggiator
+author: jahudka
+version: 1.0
+changelog: Fresh out of the oven
+about:
+  # d'Arpagnan Arpeggiator
+
+  I created d'Arpagnan because I wanted a simple-to-use, _predictable_,
+  and still powerful arpeggiator, but I couldn't find anything that
+  works and does what I need. So I rolled my own. Please beware that
+  I put this together in an afternoon and it works _for me_ - it may
+  not work for you, or you might not like the way it does.
+
+  It doesn't have a fancy step sequencer. It just takes whatever you play
+  and makes a sequence out of it using a deterministic algorithm with
+  only a couple of parameters. You can play it live. You can use it
+  in the studio. You can print out the source code and make an origami.
+  Your imagination is the limit.
+
+  ## Controls
+
+   - `Step size` is pretty self-explanatory, I think.
+   - `Algorithm` offers four choices:
+      - `up` plays the notes from the lowest to the highest,
+      - `down` does the mirror opposite,
+      - `up&down` does one `up` and then one `down` (e.g. `cegCCgeccegCCgec...`), and
+      - `up&down alt` does the same, except it deduplicates
+        the last note of each cycle, so for example `cegCgecegCgec...`.
+   - `Octaves` is used to add octaves above the played notes. It does exactly
+     the same thing as if you added transposed copies of all the notes you play.
+   - `Backtrack every X steps...` & `...by Y steps` are two controls
+     you can use to create variations of the four base algorithms.
+     They do exactly what they say they do: every X steps within the
+     sequence the algorithm will go back Y steps and "play through"
+     the Y already played steps again. So from e.g. `cegCEGC`, a setting
+     of `X = 3` and `Y = 1` would yield `cegegCgCECEG`.
+   - `Note length` can be used to make the emitted notes shorter.
+     By default the notes are the full specified `Step size` long, but
+     at 1/32 triplets at 180bpm stuff gets crazy sometimes and notes could
+     overlap, and overlapping notes could cause hanging tones. Bringing
+     note length back to 90% can be usually compensated by a slightly longer
+     decay on the synth to sound the same while avoiding this issue.
+   - `Retrigger` allows you to choose whether to restart the sequence
+     from the beginning when any one note is changed (ie. added or removed),
+     or only when there's a period of silence (even if it's only a millisecond long).
+   - `Single-note playthrough` controls the arpeggiator's behaviour when
+     only a single note is being played. Most arpeggiators will retrigger
+     that single note in the defined step length, potentially adding octaves
+     above or below. d'Arpagnan allows you to let the note play as is
+     instead. This is useful in situations where you want to override
+     what the arpeggiator is doing in that _one_ bar without having to
+     bounce the whole thing to MIDI - with this setting on, you can bounce
+     just the offending bar and leave the rest of your arrange untouched.
+
+
+slider1:7<0,23,1{1/64 triplet,1/64,1/64 dotted,1/32 triplet,1/32,1/32 dotted,1/16 triplet,1/16,1/16 dotted,1/8 triplet,1/8,1/8 dotted,1/4 triplet,1/4,1/4 dotted,1/2 triplet,1/2,1/2 dotted,1/1 triplet,1/1,1/1 dotted,2/1 triplet,2/1,2/1 dotted}>Step size
+slider2:0<0,3,1{up,down,up&down,up&down alt}>Algorithm
+slider3:1<1,4,1>Octaves
+slider4:2<2,6,1>Backtrack every X steps...
+slider5:0<0,4,1>...by Y steps
+slider6:100<0,100,1>Note length (%)
+slider7:0<0,1,1{off,on}>Retrigger
+slider8:0<0,1,1{off,on}>Single-note playthrough
+
+in_pin:none
+out_pin:none
+
+@init
+notes = 1024; num_notes = 0;
+steps = 2048; num_steps = 0;
+note = -1;
+step = -1;
+t = 0;
+algo = 0;
+step_length = 0;
+octaves = 0;
+backtrack_every = 0;
+backtrack_steps = 0;
+note_len = 0;
+retrigger = 0;
+single_note = 0;
+
+// inserts note into the sorted list of playing notes
+function add_note(n) local(i x tmp) (
+  x = -1;
+  i = 0; while(i > -1 && i <= num_notes) (
+    x < 0 ? (
+      notes[i] == n ? (
+        i = -1; // duplicate, don't add
+      ) : (i < 1 || notes[i - 1] < n) && (i === num_notes || notes[i] > n) ? (
+        x = i;
+      );
+    );
+
+    x > -1 && i >= x ? (
+      tmp = notes[i];
+      notes[i] = n;
+      n = tmp;
+    );
+
+    i += 1;
+  );
+
+  x > -1 ? num_notes += 1;
+  /* return */ i;
+);
+
+// removes note from list of playing notes
+function rem_note(n) local(i x) (
+  x = -1;
+  i = 0; while (i < num_notes) (
+    x < 0 && notes[i] == n ? x = i;
+    x > -1 && i >= x ? (
+      notes[i] = notes[i+1];
+      notes[i + 1] = 0;
+    );
+    i += 1;
+  );
+
+  x > -1 ? num_notes -= 1;
+  /* return */ x;
+);
+
+function generate_steps_unidirectional(d o) local (n s nn ns) (
+  nn = num_notes * octaves;
+  ns = nn;
+
+  s = 0; n = d < 0 ? nn - 1 : 0; while (s < ns) (
+    steps[s + o] = notes[n % num_notes] + 12 * floor(n / num_notes);
+    s += 1;
+
+    backtrack_steps > 0 && s % backtrack_every == 0 ? (
+      n -= d * backtrack_steps;
+      ns += backtrack_steps + 1;
+    ) : (
+      n += d;
+    );
+  );
+
+  /* return */ num_steps = ns;
+);
+
+function generate_steps_updown(d) local (ns1 ns2) (
+  ns1 = generate_steps_unidirectional(1, 0) - d;
+  ns2 = generate_steps_unidirectional(-1, ns1) - d;
+  /* return */ num_steps = ns1 + ns2;
+);
+
+function generate_steps() (
+  algo == 0 ? generate_steps_unidirectional(1, 0) :
+  algo == 1 ? generate_steps_unidirectional(-1, 0) :
+  algo == 2 ? generate_steps_updown(0) :
+  algo == 3 ? generate_steps_updown(1);
+);
+
+function compute_step_length() local (t, n, f) (
+  step_length == 0 ? (
+    t = 60 / tempo;
+    n = 2 ^ (floor(slider1 / 3) - 4);
+    f = slider1 % 3;
+    f == 0 ? f = 2/3 : f == 2 ? f = 3/2;
+    step_length = t * n * f;
+  );
+);
+
+function process_midi() local (tr offset msg1 msg2 msg3) (
+  tr = 0;
+
+  while (midirecv(offset, msg1, msg2, msg3)) (
+     // normalize note on / velocity 0 to note off
+     msg1 == $x90 && msg3 == 0 ? (
+       msg1 = $x80;
+     );
+
+     msg1 == $x90 ? (
+       add_note(msg2) > -1 ? tr = 1;
+     ) : msg1 == $x80 ? (
+       // forward note off
+       midisend(offset, msg1, msg2, msg3);
+       rem_note(msg2) > -1 ? tr = 1;
+     ) : (
+       // passthru
+       midisend(offset, msg1, msg2, msg3);
+     );
+  );
+
+  /* return */ tr;
+);
+
+function restart_seq() (
+  // stop current note, if any
+  note > -1 ? (
+    midisend(0, $x80, note, 0);
+    note = -1;
+  );
+
+  // restart
+  t = 0;
+  step = -1;
+
+  // if there is at least one note in the array, start playing it
+  num_steps > 0 ? (
+    step = 0;
+    note = steps[step];
+    midisend(0, $x90, note, 90);
+  );
+);
+
+function advance_seq() local (p pi s) (
+  p = t / (srate * step_length);
+  pi = floor(p);
+  s = pi % num_steps;
+
+  // if we're supposed to play the next note now let's do so
+  s != step ? (
+    note > -1 ? midisend(0, $x80, note, 0);
+    step = s;
+    note = steps[step];
+    midisend(0, $x90, note, 90);
+  ) : note > -1 && (p - pi) >= note_len ? (
+    midisend(0, $x80, note, 0);
+    note = -1;
+  );
+);
+
+@slider
+
+slider5 >= slider4 ? (
+  slider5 = slider4 - 1;
+  sliderchange();
+);
+
+step = -1;
+t = 0;
+step_length = 0;
+algo = slider2;
+octaves = slider3;
+backtrack_every = slider4;
+backtrack_steps = slider5;
+note_len = slider6 / 100;
+retrigger = slider7;
+single_note = slider8;
+generate_steps();
+
+@sample
+compute_step_length();
+t = (t + 1) % (srate * step_length * num_steps);
+
+// process midi
+process_midi() > 0 ? (
+  // if something changed, regenerate steps
+  generate_steps();
+
+  // (re)start sequence if needed
+  step < 0 || num_notes <= single_note || retrigger > 0 ? restart_seq();
+) : num_notes > single_note ? (
+  // if nothing changed & we're playing, check if we should
+  // advance to the next note
+  advance_seq();
+);

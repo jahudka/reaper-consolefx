@@ -1,11 +1,4 @@
-# Jahudka's Airwindows ConsoleFX ReaScript utilities
-
-These ReaScript utilities make it easier to create and manage proper routing
-for the Airwindows Console plugins. As you probably know, the Channel versions
-of the plugins should go on individual tracks _post-fader_, which isn't something
-we can normally do in Reaper. To simulate this, we can route each of the source
-tracks through an auxiliary track with the Console FX on it. But managing these
-auxiliary tracks manually can be tedious, which is why I made these scripts.
+# Jahudka's Reaper Scripts and JS Effects
 
 ## Installation
 
@@ -17,15 +10,42 @@ https://github.com/jahudka/reaper-consolefx/raw/master/index.xml
 
 Then download all the scripts from this repository. If you can't or don't want to
 use ReaPack:
- - Download the `FX/*.lua` files and put them in the Reaper Scripts directory
- - Download the `Utility/*.jsfx` file and put it in the Reaper Effects directory
+- Download the `FX/*.lua` files and put them in the Reaper Scripts directory
+- Download the `Utility/*.jsfx` file and put it in the Reaper Effects directory
+
+## d'Arpagnan Arpeggiator
+
+I created d'Arpagnan because I wanted a simple-to-use, _predictable_,
+and still powerful arpeggiator, but I couldn't find anything that
+works and does what I need. So I rolled my own. Please beware that
+I put this together in an afternoon, and it works _for me_ - it may
+not work for you, or you might not like the way it does.
+
+It doesn't have a fancy step sequencer. It just takes whatever you play
+and makes a sequence out of it using a deterministic algorithm with
+only a couple of parameters. You can play it live. You can use it
+in the studio. You can print out the source code and make an origami.
+Your imagination is the limit.
+
+See the package description in ReaPack or the extended description
+at the start of [the plugin source](./Utility/jahudka_darpagnan_arpeggiator.jsfx)
+to find out more about the parameters.
+
+## Airwindows Console utilities
+
+These ReaScript utilities make it easier to create and manage proper routing
+for the Airwindows Console plugins. As you probably know, the Channel versions
+of the plugins should go on individual tracks _post-fader_, which isn't something
+we can normally do in Reaper. To simulate this, we can route each of the source
+tracks through an auxiliary track with the Console FX on it. But managing these
+auxiliary tracks manually can be tedious, which is why I made these scripts.
 
 ### Important
 
 Since v2.0, some utility functions the scripts use have been extracted into
 a separate library script file called `jahudka_consolefx_utils.lua`.
 *The scripts won't function without this file*, so please don't forget to
-install it as well.
+install it as well, whether you're installing manually or through ReaPack.
 
 ### Dependencies
 
