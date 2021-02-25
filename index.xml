@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="jahudka_consolefx" commit="70171bbc918f14a14a6eb8bec586c840222974ec">
+<index version="1" name="jahudka_consolefx" commit="84bd62b12129b23c868a03c2e50ee8836f68a848">
   <category name="FX">
     <reapack name="jahudka_consolefx_create_busses.lua" type="script" desc="Create Airwindows Console post-fader busses for selected tracks">
       <metadata>
@@ -276,6 +276,35 @@ v1.0 (2020-01-05)
     </reapack>
   </category>
   <category name="Utility">
+    <reapack name="jahudka_darpagnan_arpeggiator.jsfx" type="effect" desc="d'Arpagnan Arpeggiator">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 d'Arpagnan Arpeggiator\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 I created d'Arpagnan because I wanted a simple-to-use, {\i predictable}, and still powerful arpeggiator, but I couldn't find anything that works and does what I need. So I rolled my own. Please beware that I put this together in an afternoon and it works {\i for me} - it may not work for you, or you might not like the way it does.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 It doesn't have a fancy step sequencer. It just takes whatever you play and makes a sequence out of it using a deterministic algorithm with only a couple of parameters. You can play it live. You can use it in the studio. You can print out the source code and make an origami. Your imagination is the limit.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Controls\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 Step size} is pretty self-explanatory, I think.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 Algorithm} offers four choices:\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\f1 up} plays the notes from the lowest to the highest,\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\f1 down} does the mirror opposite,\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\f1 up&down} does one {\f1 up} and then one {\f1 down} (e.g. {\f1 cegCCgeccegCCgec...}), and\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\f1 up&down alt} does the same, except it deduplicates the last note of each cycle, so for example {\f1 cegCgecegCgec...}.\sa180\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 Octaves} is used to add octaves above the played notes. It does exactly the same thing as if you added transposed copies of all the notes you play.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 Backtrack every X steps...} & {\f1 ...by Y steps} are two controls you can use to create variations of the four base algorithms. They do exactly what they say they do: every X steps within the sequence the algorithm will go back Y steps and "play through" the Y already played steps again. So from e.g. {\f1 cegCEGC}, a setting of {\f1 X = 3} and {\f1 Y = 1} would yield {\f1 cegegCgCECEG}.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 Note length} can be used to make the emitted notes shorter. By default the notes are the full specified {\f1 Step size} long, but at 1/32 triplets at 180bpm stuff gets crazy sometimes and notes could overlap, and overlapping notes could cause hanging tones. Bringing note length back to 90% can be usually compensated by a slightly longer decay on the synth to sound the same while avoiding this issue.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 Retrigger} allows you to choose whether to restart the sequence from the beginning when any one note is changed (ie. added or removed), or only when there's a period of silence (even if it's only a millisecond long).\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 Single-note playthrough} controls the arpeggiator's behaviour when only a single note is being played. Most arpeggiators will retrigger that single note in the defined step length, potentially adding octaves above or below. d'Arpagnan allows you to let the note play as is instead. This is useful in situations where you want to override what the arpeggiator is doing in that {\i one} bar without having to bounce the whole thing to MIDI - with this setting on, you can bounce just the offending bar and leave the rest of your arrange untouched.\sa180\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0" author="jahudka" time="2021-02-25T00:10:41Z">
+        <changelog><![CDATA[Fresh out of the oven]]></changelog>
+        <source>https://github.com/jahudka/reaper-consolefx/raw/84bd62b12129b23c868a03c2e50ee8836f68a848/Utility/jahudka_darpagnan_arpeggiator.jsfx</source>
+      </version>
+    </reapack>
     <reapack name="jahudka_linked_gain_utility.jsfx" type="effect" desc="Linked Gain Utility">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
